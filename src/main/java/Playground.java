@@ -43,7 +43,9 @@ public class Playground {
     public static void main(String[] args) {
         Playground outer = new Playground();
 
+        int MAX = 100;
         int bufferSize = 32;
+
         LongEventFactory factory = outer.new LongEventFactory();
 
         Disruptor<LongEvent> disruptor =
@@ -59,7 +61,6 @@ public class Playground {
         RingBuffer<LongEvent> ringBuffer = disruptor.getRingBuffer();
 
         int i = 0;
-        int MAX = 100;
         while (i < MAX) {
             try {
                 long sequence = ringBuffer.tryNext();
@@ -88,11 +89,11 @@ public class Playground {
         try {
             disruptor.halt();
             System.out.println("Invoke halt");
-            disruptor.shutdown(2, TimeUnit.MINUTES);
+            disruptor.shutdown(1, TimeUnit.MINUTES);
         } catch (TimeoutException e) {
             e.printStackTrace();
             disruptor.halt();
-            System.out.println("Invoke halt");
+            System.out.println("Invoke halt because of timeout");
         }
         System.out.println("Done");
     }
