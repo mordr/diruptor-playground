@@ -10,4 +10,5 @@ dependencies {
     compile group: 'com.landawn', name: 'abacus-util-jdk7', version: '0.8.1'
     compile group: 'edu.stanford.nlp', name: 'stanford-corenlp', version: '3.2.0'
     compile group: 'nz.ac.waikato.cms.weka', name: 'weka-stable', version: '3.6.10'
+    compile group: 'com.lmax', name: 'disruptor', version: '3.3.6'
 }
