@@ -4,9 +4,9 @@ public class DisruptorQueuePlayground {
 
     public class Producer implements Runnable {
 
-        private final DisruptorBlockingQueue queue;
+        private final DisruptorBlockingQueue<Integer> queue;
 
-        public Producer(final DisruptorBlockingQueue queue) {
+        public Producer(final DisruptorBlockingQueue<Integer> queue) {
             this.queue = queue;
         }
 
@@ -30,10 +30,10 @@ public class DisruptorQueuePlayground {
 
     public class Consumer implements Runnable {
 
-        private final DisruptorBlockingQueue queue;
+        private final DisruptorBlockingQueue<Integer> queue;
         private final int num;
 
-        public Consumer(final DisruptorBlockingQueue queue, final int num) {
+        public Consumer(final DisruptorBlockingQueue<Integer> queue, final int num) {
             this.queue = queue;
             this.num = num;
         }
@@ -57,7 +57,7 @@ public class DisruptorQueuePlayground {
         DisruptorQueuePlayground outer = new DisruptorQueuePlayground();
 
         int bufferSize = 1024;
-        DisruptorBlockingQueue queue = new DisruptorBlockingQueue(bufferSize);
+        DisruptorBlockingQueue<Integer> queue = new DisruptorBlockingQueue<>(bufferSize);
 
         Producer producer = outer.new Producer(queue);
         Consumer consumer1 = outer.new Consumer(queue, 1);
