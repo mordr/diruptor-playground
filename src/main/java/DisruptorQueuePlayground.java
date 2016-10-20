@@ -70,11 +70,6 @@ public class DisruptorQueuePlayground {
         consumer1Thread.start();
         consumer2Thread.start();
 
-        int count = 0;
-        while (count < 1000) {
-            ++count;
-        }
-
     }
 
 }
