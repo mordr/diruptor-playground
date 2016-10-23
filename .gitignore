@@ -2,6 +2,7 @@
 .project
 bin/
 .gradle/*
+.idea/*
 gradle/
 gradlew*
 build/
