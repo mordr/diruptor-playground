@@ -45,7 +45,7 @@ public class Playground {
         public void onEvent(LongEvent event, long sequence, boolean endOfBatch) throws Exception {
             if (sequence % numConsumers == ordinal) {
                 System.out.println(">> Consumer: " + ordinal + " Consuming event: " + event.get());
-                Thread.currentThread().sleep(1000);
+                Thread.currentThread().sleep(500);
             }
         }
 
