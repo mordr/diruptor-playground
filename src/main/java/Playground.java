@@ -7,6 +7,7 @@ import com.lmax.disruptor.InsufficientCapacityException;
 import com.lmax.disruptor.RingBuffer;
 import com.lmax.disruptor.TimeoutException;
 import com.lmax.disruptor.dsl.Disruptor;
+import com.lmax.disruptor.dsl.EventHandlerGroup;
 
 public class Playground {
 
@@ -32,10 +33,20 @@ public class Playground {
 
     public class LongEventHandler implements EventHandler<LongEvent> {
 
+        private final int ordinal;
+        private final int numConsumers;
+
+        public LongEventHandler(final int ordinal, final int numConsumers) {
+            this.ordinal = ordinal;
+            this.numConsumers = numConsumers;
+        }
+
         @Override
         public void onEvent(LongEvent event, long sequence, boolean endOfBatch) throws Exception {
-            System.out.println(">> Consuming event: " + event.get());
-            Thread.currentThread().sleep(1000);
+            if (sequence % numConsumers == ordinal) {
+                System.out.println(">> Consumer: " + ordinal + " Consuming event: " + event.get());
+                Thread.currentThread().sleep(1000);
+            }
         }
 
     }
@@ -50,8 +61,10 @@ public class Playground {
 
         Disruptor<LongEvent> disruptor =
                 new Disruptor<>(factory, bufferSize, Executors.defaultThreadFactory());
-        LongEventHandler eventHandler = outer.new LongEventHandler();
-        disruptor.handleEventsWith(eventHandler);
+        int numConsumers = 2;
+        LongEventHandler oddSlotEventHandler = outer.new LongEventHandler(0, numConsumers);
+        LongEventHandler evenSlotEventHandler = outer.new LongEventHandler(1, numConsumers);
+        disruptor.handleEventsWith(oddSlotEventHandler, evenSlotEventHandler);
 
         System.out.println("Start");
         System.out.println("Starting disruptor");
